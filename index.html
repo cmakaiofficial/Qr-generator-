@@ -4,199 +4,643 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#4f46e5">
-<title>QR Code Generator</title>
+<title>Professional QR Code Generator</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
-:root{--bg:#f4f5f9;--card:#fff;--ink:#12151c;--mut:#5f6878;--line:#e1e5ec;--soft:#eef0f6;--ac:#4338ca;--acs:#e9e8ff;--ok:#15803d;--warn:#b45309;--sh:0 1px 2px rgba(16,24,40,.05),0 6px 20px rgba(16,24,40,.05)}
-@media(prefers-color-scheme:dark){:root{--bg:#0d1016;--card:#171b24;--ink:#eef0f5;--mut:#9aa3b3;--line:#282e3b;--soft:#212736;--ac:#8b85ff;--acs:#262450;--ok:#4ade80;--warn:#fbbf24;--sh:none}}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent;padding-top:env(safe-area-inset-top)}
-button,input,textarea,select,summary{font:inherit;color:inherit;touch-action:manipulation}
-:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
-.top{background:var(--card);border-bottom:1px solid var(--line)}
-.top div{max-width:980px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
-.mark{width:32px;height:32px;border-radius:9px;background:var(--ac);display:grid;place-items:center}
-.brand{font-weight:800;font-size:18px;letter-spacing:-.4px}.tag{margin-left:auto;font-size:12px;color:var(--mut)}
-.wrap{max-width:980px;margin:auto;padding:20px 16px 48px}
-h1{font-size:26px;letter-spacing:-.7px;line-height:1.2;margin:4px 0 6px}
-.sub{color:var(--mut);margin:0 0 18px;max-width:52ch}
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--sh)}
-.card+.card{margin-top:14px}
-.hd{font-size:13px;font-weight:700;color:var(--mut);margin:0 0 10px}
-.tabs{display:flex;gap:8px;overflow-x:auto;margin:0 -18px 16px;padding:0 18px 4px;scroll-snap-type:x proximity;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer;font-weight:600;font-size:14px}
-.tab[aria-selected=true]{background:var(--acs);border-color:var(--ac);color:var(--ac)}
-.f{margin-bottom:14px}
-label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
-input[type=text],input[type=tel],input[type=email],input[type=password],textarea,select{width:100%;min-height:48px;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 13px;font-size:16px}
-input:focus,textarea:focus,select:focus{border-color:var(--ac);outline:0;box-shadow:0 0 0 3px var(--acs)}
-textarea{min-height:104px;resize:vertical}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-details.card{padding:0}
-summary{list-style:none;cursor:pointer;min-height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;font-weight:700}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);transform:rotate(45deg);transition:transform .2s}
-details[open] summary::after{transform:rotate(-135deg)}
-.body{padding:2px 18px 6px}
-.clr{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:6px 10px;min-height:48px}
-.clr input{width:34px;height:34px;border:0;padding:0;background:none;border-radius:8px;cursor:pointer}
-.clr span{font-size:14px;font-variant-numeric:tabular-nums;color:var(--mut)}
-input[type=range]{width:100%;min-height:32px;accent-color:var(--ac)}
-.side{position:sticky;top:14px}
-.stage{background:#fff;border-radius:14px;display:grid;place-items:center;padding:14px;border:1px solid var(--line);min-height:180px}
-.ph{color:#8a93a3;font-size:14px}
-canvas{max-width:100%;height:auto;display:block}
-.msg{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut);margin:12px 0 2px;min-height:22px}
-.msg::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--line)}
-.msg.ok::before{background:var(--ok)}.msg.w{color:var(--warn)}.msg.w::before{background:var(--warn)}
-.meta{font-size:12px;color:var(--mut);margin:0 0 14px 16px;min-height:18px}
-.actions{display:flex;gap:8px}
-.btn{flex:1;min-height:48px;border:0;border-radius:12px;background:var(--soft);font-weight:700;cursor:pointer;padding:0 12px}
-.btn.p{background:var(--ac);color:#fff;flex:2}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn:active:not(:disabled){transform:scale(.98)}
-.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:12px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:30;max-width:90vw;text-align:center}
-.toast.on{opacity:1}
-@media(min-width:821px){.toast{bottom:24px}.actions{flex-wrap:wrap}.actions .btn{flex:1 1 40%}.actions .btn.p{flex:1 1 100%}}
-@media(max-width:820px){
- .grid{grid-template-columns:1fr}.side{position:static;order:-1}
- .wrap{padding:14px 12px calc(96px + env(safe-area-inset-bottom))}
- h1{font-size:22px}.sub{font-size:14px;margin-bottom:14px}.tag{display:none}
- .card{padding:14px;border-radius:14px}.tabs{margin:0 -14px 14px;padding:0 14px 4px}
- summary{padding:0 14px}.body{padding:2px 14px 4px}
- .actions{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
- #pt,.nomob{display:none}
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --ink: #0f172a;
+  --mut: #64748b;
+  --line: #e2e8f0;
+  --soft: #f1f5f9;
+  --ac: #4f46e5;
+  --ac-hover: #4338ca;
+  --acs: #eef2ff;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --sh: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --sh-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --radius: 14px;
 }
-@media(max-width:400px){.body .two{grid-template-columns:1fr}.body .two.k{grid-template-columns:1fr 1fr}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #090d16;
+    --card: #131926;
+    --ink: #f1f5f9;
+    --mut: #94a3b8;
+    --line: #1e293b;
+    --soft: #1e293b;
+    --ac: #6366f1;
+    --ac-hover: #818cf8;
+    --acs: #1e1b4b;
+    --ok: #4ade80;
+    --warn: #fbbf24;
+    --sh: none;
+    --sh-lg: none;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  padding-top: env(safe-area-inset-top);
+}
+button, input, textarea, select, summary { font: inherit; color: inherit; touch-action: manipulation; }
+:focus-visible { outline: 2.5px solid var(--ac); outline-offset: 2px; }
+
+.top { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20; }
+.top div { max-width: 1040px; margin: auto; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+.mark { width: 34px; height: 34px; border-radius: 10px; background: var(--ac); display: grid; place-items: center; flex-none; }
+.brand { font-weight: 800; font-size: 19px; letter-spacing: -0.5px; }
+.tag { margin-left: auto; font-size: 12px; color: var(--mut); font-weight: 500; }
+
+.wrap { max-width: 1040px; margin: auto; padding: 20px 16px 48px; }
+h1 { font-size: 26px; letter-spacing: -0.7px; line-height: 1.25; margin: 4px 0 6px; font-weight: 800; }
+.sub { color: var(--mut); margin: 0 0 20px; max-width: 58ch; font-size: 15px; }
+
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 20px; align-items: start; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--sh); }
+.card + .card { margin-top: 16px; }
+.hd { font-size: 12px; font-weight: 700; color: var(--mut); margin: 0 0 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.tabs { display: flex; gap: 8px; overflow-x: auto; margin: 0 -20px 18px; padding: 0 20px 6px; scroll-snap-type: x proximity; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: none; scroll-snap-align: start; display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); cursor: pointer; font-weight: 600; font-size: 13.5px; transition: all 0.15s ease; }
+.tab:hover { border-color: var(--ac); }
+.tab[aria-selected="true"] { background: var(--acs); border-color: var(--ac); color: var(--ac); }
+
+.f { margin-bottom: 14px; }
+label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+input[type=text], input[type=tel], input[type=email], input[type=password], input[type=datetime-local], textarea, select {
+  width: 100%; min-height: 46px; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 10px 12px; font-size: 15px; transition: border-color 0.15s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--ac); outline: 0; box-shadow: 0 0 0 3px var(--acs); }
+textarea { min-height: 96px; resize: vertical; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+details.card { padding: 0; }
+summary { list-style: none; cursor: pointer; min-height: 54px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 15px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid var(--mut); border-bottom: 2px solid var(--mut); transform: rotate(45deg); transition: transform 0.2s; }
+details[open] summary::after { transform: rotate(-135deg); }
+.body { padding: 4px 20px 16px; border-top: 1px solid var(--line); }
+
+.clr-p { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.chip { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--card); outline: 1px solid var(--line); cursor: pointer; transition: transform 0.15s; }
+.chip:hover { transform: scale(1.15); }
+
+.clr { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 5px 10px; min-height: 46px; }
+.clr input[type=color] { width: 32px; height: 32px; border: 0; padding: 0; background: none; border-radius: 6px; cursor: pointer; }
+.clr span { font-size: 13.5px; font-variant-numeric: tabular-nums; color: var(--mut); font-family: monospace; }
+input[type=range] { width: 100%; min-height: 32px; accent-color: var(--ac); }
+
+.side { position: sticky; top: 68px; }
+.stage-wrap { position: relative; background: #ffffff; border-radius: 12px; border: 1px solid var(--line); padding: 16px; display: grid; place-items: center; min-height: 240px; box-shadow: inset 0 0 10px rgba(0,0,0,0.02); }
+.ph { color: #8a93a3; font-size: 14px; font-weight: 500; text-align: center; }
+canvas { max-width: 100%; height: auto; display: block; border-radius: 6px; }
+
+.msg { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mut); margin: 12px 0 4px; min-height: 22px; font-weight: 500; }
+.msg::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.msg.ok::before { background: var(--ok); }
+.msg.w { color: var(--warn); }
+.msg.w::before { background: var(--warn); }
+.meta { font-size: 12px; color: var(--mut); margin: 0 0 14px; min-height: 18px; }
+
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn { min-height: 44px; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); font-weight: 600; font-size: 14px; cursor: pointer; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s ease; }
+.btn:hover:not(:disabled) { background: var(--line); }
+.btn.p { background: var(--ac); color: #fff; border-color: var(--ac); grid-column: span 2; font-size: 15px; }
+.btn.p:hover:not(:disabled) { background: var(--ac-hover); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:active:not(:disabled) { transform: scale(0.98); }
+
+.hist { margin-top: 14px; max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.hist-item { font-size: 12px; padding: 8px 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.hist-item:hover { border-color: var(--ac); }
+
+.toast { position: fixed; left: 50%; bottom: calc(88px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 20px; font-weight: 600; font-size: 13.5px; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 30; max-width: 90vw; text-align: center; box-shadow: var(--sh-lg); }
+.toast.on { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+
+@media (min-width: 821px) {
+  .toast { bottom: 24px; }
+}
+@media (max-width: 820px) {
+  .grid { grid-template-columns: 1fr; }
+  .side { position: static; order: -1; }
+  .wrap { padding: 14px 12px calc(96px + env(safe-area-inset-bottom)); }
+  h1 { font-size: 22px; }
+  .sub { font-size: 14px; margin-bottom: 14px; }
+  .tag { display: none; }
+  .card { padding: 16px; border-radius: 12px; }
+  .tabs { margin: 0 -16px 14px; padding: 0 16px 4px; }
+  summary { padding: 0 16px; }
+  .body { padding: 8px 16px 14px; }
+  .actions { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--card); border-top: 1px solid var(--line); padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); border-radius: 16px 16px 0 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); grid-template-columns: 2fr 1fr 1fr 1fr; }
+  .btn.p { grid-column: auto; }
+  .nomob { display: none !important; }
+}
+@media (max-width: 420px) {
+  .actions { grid-template-columns: 1fr 1fr; }
+  .btn.p { grid-column: span 2; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
-<header class="top"><div><span class="mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="#fff"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="11" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="3" height="3"/><rect x="15" y="15" width="2" height="2"/></svg></span><span class="brand">QR Generator</span><span class="tag">Free · Private · No sign-up</span></div></header>
-<main class="wrap">
-<h1>Create a QR code in seconds</h1>
-<p class="sub">Choose a type, enter your details and download a sharp, print-ready code.</p>
-<div class="grid">
-<div>
-<section class="card" aria-label="Content">
-<p class="hd">Content</p>
-<div class="tabs" role="tablist" id="tabs"></div>
-<div id="form"></div>
-</section>
-<details class="card" id="style">
-<summary>Style and size</summary>
-<div class="body">
-<div class="two k">
-<div class="f"><label for="fg">QR colour</label><div class="clr"><input type="color" id="fg" value="#111827"><span id="fgv">#111827</span></div></div>
-<div class="f"><label for="bg">Background</label><div class="clr"><input type="color" id="bg" value="#ffffff"><span id="bgv">#ffffff</span></div></div>
-</div>
-<div class="f"><label for="ec">Error correction</label><select id="ec"><option value="L">Low, smallest code</option><option value="M" selected>Medium, recommended</option><option value="Q">Quartile</option><option value="H">High, most durable</option></select></div>
-<div class="f"><label for="sz">Download size: <span id="szv">1024</span> px</label><input type="range" id="sz" min="256" max="2048" step="128" value="1024"></div>
-<div class="f"><label for="mg">Quiet margin: <span id="mgv">4</span></label><input type="range" id="mg" min="0" max="8" value="4"></div>
-</div>
-</details>
-</div>
-<aside class="side">
-<section class="card" aria-label="Preview">
-<p class="hd">Your QR code</p>
-<div class="stage" id="stage"></div>
-<div class="msg" id="msg" role="status"></div>
-<p class="meta" id="meta"></p>
-<div class="actions">
-<button class="btn p" id="png" type="button">Download PNG</button>
-<button class="btn" id="svg" type="button">SVG</button>
-<button class="btn" id="cp" type="button">Copy</button>
-<button class="btn" id="sh" type="button" hidden>Share</button>
-<button class="btn" id="pt" type="button">Print</button>
-</div>
-</section>
-</aside>
-</div>
-</main>
-<div class="toast" id="toast" role="status"></div>
-<script>
-const $=id=>document.getElementById(id);
-const F=(id,l,t,ph,extra)=>({id,l,t:t||'text',ph:ph||'',extra});
-const TYPES={
- 'Text / URL':{f:[F('v','Text or link','area','https://example.com')],b:d=>d.v},
- 'Wi-Fi':{f:[F('ss','Network name (SSID)'),F('pw','Password','password'),F('sec','Security','sel',0,['WPA','WEP','nopass'])],
-  b:d=>{const e=s=>(s||'').replace(/([\\;,:"])/g,'\\$1');return d.ss?'WIFI:T:'+d.sec+';S:'+e(d.ss)+';'+(d.sec==='nopass'?'':'P:'+e(d.pw)+';')+';':''}},
- 'Contact':{f:[F('fn','First name'),F('ln','Last name'),F('ph','Phone','tel'),F('em','Email','email'),F('og','Company'),F('ur','Website')],
-  b:d=>{if(!d.fn&&!d.ln)return'';const c=s=>(s||'').replace(/([\\;,])/g,'\\$1').replace(/\n/g,' ');
-   return['BEGIN:VCARD','VERSION:3.0','N:'+c(d.ln)+';'+c(d.fn)+';;;','FN:'+c((d.fn+' '+d.ln).trim()),d.og&&'ORG:'+c(d.og),d.ph&&'TEL:'+c(d.ph),d.em&&'EMAIL:'+c(d.em),d.ur&&'URL:'+c(d.ur),'END:VCARD'].filter(Boolean).join('\n')}},
- 'Email':{f:[F('to','To','email'),F('sj','Subject'),F('bd','Message','area')],
-  b:d=>d.to?'mailto:'+d.to+'?subject='+encodeURIComponent(d.sj||'')+'&body='+encodeURIComponent(d.bd||''):''},
- 'Phone':{f:[F('tl','Phone number','tel','+91 98765 43210')],b:d=>d.tl?'tel:'+d.tl.replace(/[^\d+]/g,''):''},
- 'SMS':{f:[F('sn','Phone number','tel'),F('sm','Message','area')],b:d=>d.sn?'SMSTO:'+d.sn.replace(/[^\d+]/g,'')+':'+(d.sm||''):''},
- 'WhatsApp':{f:[F('wn','Number with country code','tel','919876543210'),F('wm','Message','area')],
-  b:d=>{const n=(d.wn||'').replace(/\D/g,'');return n?'https://wa.me/'+n+(d.wm?'?text='+encodeURIComponent(d.wm):''):''}}
-};
-const ICON={'Text / URL':'🔗','Wi-Fi':'📶','Contact':'👤','Email':'✉️','Phone':'📞','SMS':'💬','WhatsApp':'🟢'};
-let cur='Text / URL',qr=null,text='';
-qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];
 
-function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2000)}
-function tabs(){
-  $('tabs').innerHTML='';
-  Object.keys(TYPES).forEach(k=>{const b=document.createElement('button');b.type='button';b.className='tab';b.innerHTML='<span aria-hidden="true">'+ICON[k]+'</span>'+k;b.setAttribute('role','tab');b.setAttribute('aria-selected',k===cur);b.onclick=()=>{cur=k;tabs();form();make()};$('tabs').append(b)});
+<header class="top">
+  <div>
+    <span class="mark" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 18 18" fill="#fff"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="11" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="3" height="3"/><rect x="15" y="15" width="2" height="2"/></svg>
+    </span>
+    <span class="brand">QR Code Studio</span>
+    <span class="tag">Instant · Secure · No Sign-Up</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>Create customized QR codes</h1>
+  <p class="sub">Select a QR type, customize colors and branding, then export print-ready vector or PNG files.</p>
+
+  <div class="grid">
+    <div>
+      <section class="card" aria-label="Content input">
+        <p class="hd">1. Content Type</p>
+        <div class="tabs" role="tablist" id="tabs"></div>
+        <div id="form"></div>
+      </section>
+
+      <details class="card" id="style">
+        <summary>2. Style, Color & Branding</summary>
+        <div class="body">
+          <label>Color Presets</label>
+          <div class="clr-p" id="palettes"></div>
+
+          <div class="two">
+            <div class="f">
+              <label for="fg">Foreground</label>
+              <div class="clr"><input type="color" id="fg" value="#0f172a"><span id="fgv">#0f172a</span></div>
+            </div>
+            <div class="f">
+              <label for="bg">Background</label>
+              <div class="clr"><input type="color" id="bg" value="#ffffff"><span id="bgv">#ffffff</span></div>
+            </div>
+          </div>
+
+          <div class="two">
+            <div class="f">
+              <label for="shape">Module Style</label>
+              <select id="shape">
+                <option value="square">Classic Square</option>
+                <option value="rounded" selected>Soft Rounded</option>
+                <option value="dots">Dots / Circles</option>
+              </select>
+            </div>
+            <div class="f">
+              <label for="ec">Error Correction</label>
+              <select id="ec">
+                <option value="L">Low (7% recovery)</option>
+                <option value="M" selected>Medium (15%)</option>
+                <option value="Q">Quartile (25%)</option>
+                <option value="H">High (30% - Best for logos)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="f">
+            <label for="logo">Center Logo (Optional)</label>
+            <input type="file" id="logo" accept="image/png, image/jpeg, image/svg+xml">
+          </div>
+
+          <div class="two">
+            <div class="f">
+              <label for="sz">Export Size: <span id="szv">1024</span> px</label>
+              <input type="range" id="sz" min="256" max="4096" step="128" value="1024">
+            </div>
+            <div class="f">
+              <label for="mg">Margin (Quiet Zone): <span id="mgv">3</span></label>
+              <input type="range" id="mg" min="0" max="8" value="3">
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <aside class="side">
+      <section class="card" aria-label="Live Preview">
+        <p class="hd">Live Preview</p>
+        <div class="stage-wrap">
+          <div id="stage"></div>
+        </div>
+        
+        <div class="msg" id="msg" role="status"></div>
+        <p class="meta" id="meta"></p>
+
+        <div class="actions">
+          <button class="btn p" id="png" type="button">Download PNG</button>
+          <button class="btn" id="svg" type="button">SVG</button>
+          <button class="btn" id="cp" type="button">Copy</button>
+          <button class="btn" id="sh" type="button" hidden>Share</button>
+          <button class="btn nomob" id="pt" type="button">Print</button>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <p class="hd" style="margin-bottom:6px;">Recent History</p>
+          <div class="hist" id="hist"></div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const F = (id, l, t, ph, extra) => ({ id, l, t: t || 'text', ph: ph || '', extra });
+
+const PALETTES = [
+  { fg: '#0f172a', bg: '#ffffff' },
+  { fg: '#4f46e5', bg: '#ffffff' },
+  { fg: '#059669', bg: '#ffffff' },
+  { fg: '#dc2626', bg: '#ffffff' },
+  { fg: '#d97706', bg: '#ffffff' },
+  { fg: '#38bdf8', bg: '#0f172a' }
+];
+
+const TYPES = {
+  'URL / Text': {
+    f: [F('v', 'Text or Website Link', 'area', 'https://example.com')],
+    b: d => d.v
+  },
+  'Wi-Fi': {
+    f: [F('ss', 'Network Name (SSID)'), F('pw', 'Password', 'password'), F('sec', 'Security Type', 'sel', 0, ['WPA', 'WEP', 'nopass'])],
+    b: d => {
+      const e = s => (s || '').replace(/([\\;,:"])/g, '\\$1');
+      return d.ss ? `WIFI:T:${d.sec};S:${e(d.ss)};${d.sec === 'nopass' ? '' : 'P:' + e(d.pw) + ';'};` : '';
+    }
+  },
+  'Contact': {
+    f: [F('fn', 'First Name'), F('ln', 'Last Name'), F('ph', 'Phone Number', 'tel'), F('em', 'Email Address', 'email'), F('og', 'Company / Org')],
+    b: d => {
+      if (!d.fn && !d.ln && !d.ph && !d.em && !d.og) return '';
+      const c = s => (s || '').replace(/([\\;,])/g, '\\$1').replace(/\n/g, ' ');
+      return [
+        'BEGIN:VCARD', 'VERSION:3.0',
+        `N:${c(d.ln)};${c(d.fn)};;;`,
+        `FN:${c((d.fn + ' ' + d.ln).trim())}`,
+        d.og && `ORG:${c(d.og)}`,
+        d.ph && `TEL;TYPE=CELL:${c(d.ph)}`,
+        d.em && `EMAIL:${c(d.em)}`,
+        'END:VCARD'
+      ].filter(Boolean).join('\n');
+    }
+  },
+  'Email': {
+    f: [F('to', 'Recipient Email', 'email'), F('sj', 'Subject Line'), F('bd', 'Email Body', 'area')],
+    b: d => d.to ? `mailto:${d.to}?subject=${encodeURIComponent(d.sj || '')}&body=${encodeURIComponent(d.bd || '')}` : ''
+  },
+  'Phone': {
+    f: [F('tl', 'Phone Number', 'tel', '+1 555 123 4567')],
+    b: d => d.tl ? `tel:${d.tl.replace(/[^\d+]/g, '')}` : ''
+  },
+  'SMS': {
+    f: [F('sn', 'Recipient Number', 'tel'), F('sm', 'Pre-filled Text Message', 'area')],
+    b: d => d.sn ? `SMSTO:${d.sn.replace(/[^\d+]/g, '')}:${d.sm || ''}` : ''
+  },
+  'WhatsApp': {
+    f: [F('wn', 'Phone Number (with country code)', 'tel', '15551234567'), F('wm', 'Message Prompt', 'area')],
+    b: d => {
+      const n = (d.wn || '').replace(/\D/g, '');
+      return n ? `https://wa.me/${n}${d.wm ? '?text=' + encodeURIComponent(d.wm) : ''}` : '';
+    }
+  },
+  'Location': {
+    f: [F('lt', 'Latitude', 'text', '37.7749'), F('lg', 'Longitude', 'text', '-122.4194')],
+    b: d => (d.lt && d.lg) ? `https://maps.google.com/?q=${d.lt.trim()},${d.lg.trim()}` : ''
+  },
+  'Event': {
+    f: [F('et', 'Event Title'), F('el', 'Location'), F('es', 'Start Date/Time', 'datetime-local'), F('ee', 'End Date/Time', 'datetime-local')],
+    b: d => {
+      if (!d.et) return '';
+      const fmt = dt => dt ? dt.replace(/[-:]/g, '') + '00Z' : '';
+      return ['BEGIN:VEVENT', `SUMMARY:${d.et}`, d.el && `LOCATION:${d.el}`, d.es && `DTSTART:${fmt(d.es)}`, d.ee && `DTEND:${fmt(d.ee)}`, 'END:VEVENT'].filter(Boolean).join('\n');
+    }
+  }
+};
+
+const ICON = {
+  'URL / Text': '🔗', 'Wi-Fi': '📶', 'Contact': '👤', 'Email': '✉️',
+  'Phone': '📞', 'SMS': '💬', 'WhatsApp': '🟢', 'Location': '📍', 'Event': '📅'
+};
+
+let cur = 'URL / Text', qr = null, text = '', logoImg = null;
+const vals = {};
+
+qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
+
+function toast(m) {
+  const t = $('toast'); t.textContent = m; t.classList.add('on');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2200);
 }
-const vals={};
-function form(){
-  $('form').innerHTML=TYPES[cur].f.map(f=>{
-    const v=vals[f.id]||'';let i;
-    if(f.t==='area')i='<textarea id="'+f.id+'" placeholder="'+f.ph+'"></textarea>';
-    else if(f.t==='sel')i='<select id="'+f.id+'">'+f.extra.map(o=>'<option>'+o+'</option>').join('')+'</select>';
-    else i='<input type="'+f.t+'" id="'+f.id+'" placeholder="'+f.ph+'" autocomplete="off" autocapitalize="off">';
-    return '<div class="f"><label for="'+f.id+'">'+f.l+'</label>'+i+'</div>'}).join('');
-  TYPES[cur].f.forEach(f=>{const e=$(f.id);if(vals[f.id])e.value=vals[f.id];e.addEventListener('input',()=>{vals[f.id]=e.value;make()})});
+
+function initPalettes() {
+  const p = $('palettes'); p.innerHTML = '';
+  PALETTES.forEach(pal => {
+    const btn = document.createElement('button');
+    btn.className = 'chip'; btn.type = 'button';
+    btn.style.background = pal.fg;
+    btn.title = `Foreground: ${pal.fg}, Background: ${pal.bg}`;
+    btn.onclick = () => {
+      $('fg').value = pal.fg; $('bg').value = pal.bg;
+      updateColorLabels(); make();
+    };
+    p.append(btn);
+  });
 }
-function data(){const d={};TYPES[cur].f.forEach(f=>d[f.id]=(vals[f.id]||'').trim());if(cur==='Wi-Fi')d.sec=$('sec').value;return d}
-function lum(h){const c=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*c[0]+.7152*c[1]+.0722*c[2]}
-function make(){
-  const m=$('msg');m.className='msg';$('meta').textContent='';
-  text=TYPES[cur].b(data());
-  $('png').disabled=$('svg').disabled=$('cp').disabled=$('pt').disabled=$('sh').disabled=!text;
-  if(!text){qr=null;$('stage').innerHTML='';m.textContent='Add your content to create the QR.';$('stage').innerHTML='<div class="ph">QR preview</div>';return}
-  try{qr=qrcode(0,$('ec').value);qr.addData(text);qr.make()}
-  catch(e){qr=null;$('stage').innerHTML='<div class="ph">Too long</div>';m.textContent='Too much content for one QR. Shorten it or lower error correction.';m.classList.add('w');return}
-  const s=Math.min(320,innerWidth-88);$('stage').innerHTML='';$('stage').append(draw(s));
-  const a=lum($('fg').value),b=lum($('bg').value),r=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
-  if(a>=b){m.textContent='Use a darker QR colour than the background, or it may not scan.';m.classList.add('w')}
-  else if(r<3){m.textContent='Low contrast. Pick a darker colour so it scans reliably.';m.classList.add('w')}
-  else{m.classList.add('ok');m.textContent='Ready. Test it with your camera.'}
-  $('meta').textContent=text.length+' characters · '+qr.getModuleCount()+'×'+qr.getModuleCount()+' modules';
+
+function updateColorLabels() {
+  $('fgv').textContent =$('fg').value;
+  $('bgv').textContent =$('bg').value;
 }
-function draw(size){
-  const n=qr.getModuleCount(),mg=+$('mg').value,cell=Math.max(1,Math.floor(size/(n+2*mg))),px=cell*(n+2*mg);
-  const c=document.createElement('canvas');c.width=c.height=px;const x=c.getContext('2d');
-  x.fillStyle=$('bg').value;x.fillRect(0,0,px,px);x.fillStyle=$('fg').value;
-  for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(qr.isDark(r,k))x.fillRect((k+mg)*cell,(r+mg)*cell,cell,cell);
-  return c;
+
+function tabs() {
+  $('tabs').innerHTML = '';
+  Object.keys(TYPES).forEach(k => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'tab';
+    b.innerHTML = `<span aria-hidden="true">${ICON[k]}</span>${k}`;
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-selected', k === cur);
+    b.onclick = () => { cur = k; tabs(); form(); make(); };
+    $('tabs').append(b);
+  });
 }
-function svg(){
-  const n=qr.getModuleCount(),mg=+$('mg').value,t=n+2*mg;let p='';
-  for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(qr.isDark(r,k))p+='M'+(k+mg)+' '+(r+mg)+'h1v1h-1z';
-  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+t+' '+t+'" width="'+$('sz').value+'" height="'+$('sz').value+'" shape-rendering="crispEdges"><rect width="'+t+'" height="'+t+'" fill="'+$('bg').value+'"/><path d="'+p+'" fill="'+$('fg').value+'"/></svg>';
+
+function form() {
+  $('form').innerHTML = TYPES[cur].f.map(f => {
+    const v = vals[f.id] || ''; let i;
+    if (f.t === 'area') i = `<textarea id="${f.id}" placeholder="${f.ph}">${v}</textarea>`;
+    else if (f.t === 'sel') i = `<select id="${f.id}">${f.extra.map(o => `<option ${o===v?'selected':''}>${o}</option>`).join('')}</select>`;
+    else i = `<input type="${f.t}" id="${f.id}" value="${v}" placeholder="${f.ph}" autocomplete="off">`;
+    return `<div class="f"><label for="${f.id}">${f.l}</label>${i}</div>`;
+  }).join('');
+
+  TYPES[cur].f.forEach(f => {
+    const e = $(f.id);
+    const handler = () => { vals[f.id] = e.value; make(); };
+    e.addEventListener('input', handler);
+    e.addEventListener('change', handler);
+  });
 }
-function save(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
-const big=()=>draw(+$('sz').value);
-$('png').onclick=()=>big().toBlob(b=>{save(b,'qr-code.png');toast('PNG downloaded')});
-$('svg').onclick=()=>{save(new Blob([svg()],{type:'image/svg+xml'}),'qr-code.svg');toast('SVG downloaded')};
-$('cp').onclick=()=>big().toBlob(async b=>{
-  try{await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);toast('Image copied')}
-  catch(e){save(b,'qr-code.png');toast('Copy not supported here. Downloaded instead.')}});
-$('pt').onclick=()=>{const w=window.open('','_blank');if(!w)return toast('Allow pop-ups to print');
-  w.document.write('<title>QR</title><body style="margin:0;display:grid;place-items:center;height:100vh"><img src="'+big().toDataURL()+'" style="width:70vmin">');w.document.close();w.onload=()=>w.print()};
-if(navigator.share&&navigator.canShare){$('sh').hidden=false;$('cp').classList.add('nomob')}
-if(innerWidth>820)$('style').open=true;
-$('sh').onclick=()=>big().toBlob(async b=>{const f=new File([b],'qr-code.png',{type:'image/png'});
-  try{if(navigator.canShare({files:[f]}))await navigator.share({files:[f]});else toast('Sharing images is not supported here')}catch(e){}});
-['fg','bg','ec','mg','sz'].forEach(id=>$(id).addEventListener('input',()=>{$('mgv').textContent=$('mg').value;$('szv').textContent=$('sz').value;$('fgv').textContent=$('fg').value;$('bgv').textContent=$('bg').value;make()}));
-addEventListener('resize',()=>{if(qr)make()});
-tabs();form();make();
+
+function data() {
+  const d = {};
+  TYPES[cur].f.forEach(f => {
+    const el = $(f.id);
+    d[f.id] = el ? el.value.trim() : '';
+  });
+  return d;
+}
+
+function lum(h) {
+  const c = [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+
+function make() {
+  const m = $('msg'); m.className = 'msg';$('meta').textContent = '';
+  text = TYPES[cur].b(data());
+  
+  $('png').disabled = $('svg').disabled =$('cp').disabled = $('pt').disabled =$('sh').disabled = !text;
+  
+  if (!text) {
+    qr = null; $('stage').innerHTML = '<div class="ph">Fill out the fields to generate your QR code</div>';
+    m.textContent = 'Awaiting input content...'; return;
+  }
+
+  const ecLevel = logoImg ? 'H' : $('ec').value;
+
+  try {
+    qr = qrcode(0, ecLevel);
+    qr.addData(text);
+    qr.make();
+  } catch (e) {
+    qr = null;
+    $('stage').innerHTML = '<div class="ph">Data limit exceeded</div>';
+    m.textContent = 'Too much data for this configuration. Shorten your input.';
+    m.classList.add('w'); return;
+  }
+
+  const previewSize = Math.min(280, innerWidth - 80);
+  $('stage').innerHTML = '';$('stage').append(draw(previewSize));
+
+  const a = lum($('fg').value), b = lum($('bg').value);
+  const ratio = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+
+  if (a >= b) {
+    m.textContent = 'Warning: Dark backgrounds may fail on traditional laser scanners.'; m.classList.add('w');
+  } else if (ratio < 3) {
+    m.textContent = 'Low contrast detected. Increase contrast for better scanning reliability.'; m.classList.add('w');
+  } else {
+    m.classList.add('ok'); m.textContent = 'Ready to scan! Tested for optimal camera read.';
+  }
+
+  $('meta').textContent = `${text.length} chars · ${qr.getModuleCount()}×${qr.getModuleCount()} grid · Level ${ecLevel}`;
+  saveHistory(text);
+}
+
+function draw(size) {
+  const n = qr.getModuleCount(), mg = +$('mg').value, totalModules = n + 2 * mg;
+  const dpr = window.devicePixelRatio || 1;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size * dpr;
+  canvas.style.width = canvas.style.height = `${size}px`;
+  
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const cellSize = size / totalModules;
+  const shape = $('shape').value;
+
+  ctx.fillStyle = $('bg').value;
+  ctx.fillRect(0, 0, size, size);
+
+  ctx.fillStyle = $('fg').value;
+
+  for (let r = 0; r < n; r++) {
+    for (let c = 0; c < n; c++) {
+      if (qr.isDark(r, c)) {
+        const x = (c + mg) * cellSize;
+        const y = (r + mg) * cellSize;
+
+        if (shape === 'dots') {
+          ctx.beginPath();
+          ctx.arc(x + cellSize / 2, y + cellSize / 2, cellSize / 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (shape === 'rounded') {
+          const rad = cellSize * 0.35;
+          ctx.beginPath();
+          ctx.roundRect(x, y, cellSize + 0.3, cellSize + 0.3, rad);
+          ctx.fill();
+        } else {
+          ctx.fillRect(x, y, cellSize + 0.4, cellSize + 0.4);
+        }
+      }
+    }
+  }
+
+  if (logoImg) {
+    const logoScale = 0.22;
+    const logoSize = size * logoScale;
+    const center = size / 2;
+    const lx = center - logoSize / 2;
+    const ly = center - logoSize / 2;
+
+    ctx.fillStyle = $('bg').value;
+    ctx.beginPath();
+    ctx.roundRect(lx - 4, ly - 4, logoSize + 8, logoSize + 8, 8);
+    ctx.fill();
+
+    ctx.drawImage(logoImg, lx, ly, logoSize, logoSize);
+  }
+
+  return canvas;
+}
+
+function svg() {
+  const n = qr.getModuleCount(), mg = +$('mg').value, totalModules = n + 2 * mg;
+  const shape = $('shape').value;
+  let paths = '';
+
+  for (let r = 0; r < n; r++) {
+    for (let c = 0; c < n; c++) {
+      if (qr.isDark(r, c)) {
+        const x = c + mg, y = r + mg;
+        if (shape === 'dots') {
+          paths += `<circle cx="${x + 0.5}" cy="${y + 0.5}" r="0.45" fill="${$('fg').value}"/>`;
+        } else if (shape === 'rounded') {
+          paths += `<rect x="${x}" y="${y}" width="1.05" height="1.05" rx="0.3" fill="${$('fg').value}"/>`;
+        } else {
+          paths += `<rect x="${x}" y="${y}" width="1" height="1" fill="${$('fg').value}"/>`;
+        }
+      }
+    }
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalModules} ${totalModules}" width="${$('sz').value}" height="${$('sz').value}"><rect width="${totalModules}" height="${totalModules}" fill="${$('bg').value}"/>${paths}</svg>`;
+}
+
+function saveFile(blob, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+function saveHistory(item) {
+  try {
+    let h = JSON.parse(localStorage.getItem('qr_hist') || '[]');
+    if (!h.includes(item)) {
+      h.unshift(item); if (h.length > 5) h.pop();
+      localStorage.setItem('qr_hist', JSON.stringify(h));
+      renderHistory();
+    }
+  } catch(e) {}
+}
+
+function renderHistory() {
+  try {
+    const h = JSON.parse(localStorage.getItem('qr_hist') || '[]');
+    const container = $('hist');
+    if (!h.length) { container.innerHTML = '<span style="font-size:12px;color:var(--mut)">No recent codes</span>'; return; }
+    container.innerHTML = h.map(i => {
+      const label = i.length > 28 ? i.slice(0, 25) + '...' : i;
+      return `<div class="hist-item" onclick="loadHistory('${encodeURIComponent(i)}')"><span>${label}</span><span>↗</span></div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+window.loadHistory = function(str) {
+  const decoded = decodeURIComponent(str);
+  cur = 'URL / Text'; tabs();
+  vals['v'] = decoded;
+  form(); make();
+  toast('Loaded from history');
+};
+
+const exportBigCanvas = () => draw(+$('sz').value);
+
+$('png').onclick = () => exportBigCanvas().toBlob(b => { saveFile(b, 'qrcode.png'); toast('PNG image downloaded'); });$('svg').onclick = () => { saveFile(new Blob([svg()], { type: 'image/svg+xml' }), 'qrcode.svg'); toast('Vector SVG downloaded'); };
+
+$('cp').onclick = () => exportBigCanvas().toBlob(async b => {
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]);
+    toast('Copied to clipboard!');
+  } catch (e) {
+    saveFile(b, 'qrcode.png');
+    toast('Direct copy unsupported. Downloaded PNG instead.');
+  }
+});
+
+$('pt').onclick = () => {
+  const w = window.open('', '_blank');
+  if (!w) return toast('Please allow pop-ups to enable printing');
+  w.document.write('<title>Print QR Code</title><body style="margin:0;display:grid;place-items:center;height:100vh"><img src="' + exportBigCanvas().toDataURL() + '" style="width:60vmin"></body>');
+  w.document.close();
+  w.onload = () => w.print();
+};
+
+if (navigator.share && navigator.canShare) {
+  $('sh').hidden = false;
+  $('sh').onclick = () => exportBigCanvas().toBlob(async b => {
+    const f = new File([b], 'qrcode.png', { type: 'image/png' });
+    try {
+      if (navigator.canShare({ files: [f] })) {
+        await navigator.share({ files: [f], title: 'QR Code' });
+      } else {
+        toast('Sharing files is not supported on this device.');
+      }
+    } catch (e) {}
+  });
+}
+
+$('logo').onchange = e => {
+  const file = e.target.files[0];
+  if (!file) { logoImg = null; make(); return; }
+  const reader = new FileReader();
+  reader.onload = evt => {
+    const img = new Image();
+    img.onload = () => { logoImg = img; $('ec').value = 'H'; make(); toast('Logo added (Error Correction set to High)'); };
+    img.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+['fg', 'bg', 'ec', 'mg', 'sz', 'shape'].forEach(id => {
+  const el = $(id);
+  const handler = () => {
+    $('mgv').textContent =$('mg').value;
+    $('szv').textContent =$('sz').value;
+    updateColorLabels(); make();
+  };
+  el.addEventListener('input', handler);
+  el.addEventListener('change', handler);
+});
+
+if (innerWidth > 820) $('style').open = true;
+
+initPalettes();
+tabs();
+form();
+make();
+renderHistory();
 </script>
 </body>
 </html>
